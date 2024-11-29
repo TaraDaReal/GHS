@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
     public Camera cam;
-    public Vector2 mousePos;
+    private Vector2 mousePos;
 
     Vector2 velocity;
 
@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         velocity = Vector2.zero;
-        velocity.x = Input.GetAxisRaw("Horizontal");
+        velocity.x = 0f;
         velocity.y = Input.GetAxisRaw("Vertical");
         velocity = Vector2.ClampMagnitude(velocity, 1f);
 
@@ -36,11 +36,11 @@ public class Player : MonoBehaviour
         Vector2 lookDir = mousePos - rb.position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
         rb.rotation = angle;
-
-        moveCharacter(velocity);
+        
+        MoveCharacter(velocity);
     }
 
-    void moveCharacter(Vector2 dir)
+    void MoveCharacter(Vector2 dir)
     {
         Quaternion rotation = Quaternion.Euler(0f, 0f, rb.rotation);
 
