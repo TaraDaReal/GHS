@@ -5,38 +5,21 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
 
-    public Transform player;
-    public BoxCollider2D mapBounds;
+    GameObject player;
+    Rigidbody2D playerRB;
 
-    private float xMin, xMax, yMin, yMax;
-    private float camX, camY;
-    private float camOrthSize;
-    private float camRatio;
-    private Camera mainCam;
-
-    // Start is called before the first frame update
     void Start()
     {
-        xMin = mapBounds.bounds.min.x;
-        xMax = mapBounds.bounds.max.x;
+        player = GameObject.FindGameObjectWithTag("Player");
 
-        yMin = mapBounds.bounds.min.y;
-        yMax = mapBounds.bounds.max.y;
-
-        mainCam = GetComponent<Camera>();
-
-        camOrthSize = mainCam.orthographicSize;
-        
-        camRatio = (xMax + camOrthSize) / 2f;
+        playerRB = player.GetComponent<Rigidbody2D>();
     }
-
-    // Update is called once per frame
-    void FixedUpdate()
+    
+    void LateUpdate()
     {
-        camX = Mathf.Clamp(player.position.x, xMin + camRatio, xMax - camRatio);
-
-        camY = Mathf.Clamp(player.position.y, yMin + camOrthSize, yMax - camOrthSize);
-
-        transform.position = new Vector3(camX, camY, transform.position.z);
+        Vector3 pos = transform.position;
+        pos.x = playerRB.position.x;
+        pos.y = playerRB.position.y;
+        transform.position = pos;
     }
 }
